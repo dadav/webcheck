@@ -5,6 +5,13 @@ Puppet::Type.type(:wait_for_response).provide(:ruby) do
   desc 'A provider for the resource type "wait_for_connection" which attemps to create the connection via. the socket package.'
 
   def exists?
+    if resource[:refreshonly]
+      return true
+    end
+    trigger
+  end
+
+  def trigger
     start_time = Time.now
     timeout = resource[:timeout]
 

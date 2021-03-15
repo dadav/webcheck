@@ -1,6 +1,6 @@
 require 'socket'
 
-class Puppet::Util::Validator
+class Puppet::Util::ConnectionValidator
   attr_reader :host
   attr_reader :port
 

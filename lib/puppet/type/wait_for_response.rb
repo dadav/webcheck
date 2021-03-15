@@ -6,6 +6,12 @@ Puppet::Type.newtype(:wait_for_response) do
     defaultto :present
   end
 
+  newparam(:refreshonly) do
+    desc 'Only run on refreshs'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
   newparam(:uri, namevar: true) do
     desc 'The uri to perform a http-get request on.'
   end
@@ -51,5 +57,9 @@ Puppet::Type.newtype(:wait_for_response) do
     munge do |value|
       Integer(value)
     end
+  end
+
+  def refresh
+    provider.trigger
   end
 end

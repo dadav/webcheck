@@ -7,6 +7,12 @@ Puppet::Type.newtype(:wait_for_connection) do
     defaultto :present
   end
 
+  newparam(:refreshonly) do
+    desc 'Only run on refreshs'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
   newparam(:host, namevar: true) do
     desc 'The DNS name or IP address of the server.'
   end
@@ -41,5 +47,28 @@ Puppet::Type.newtype(:wait_for_connection) do
     munge do |value|
       Integer(value)
     end
+  end
+
+  def refresh
+    provider.trigger
+  end
+
+  def self.title_patterns
+    value = lambda {|x| x}
+    [
+      [
+        /^(.+):(\d+)$/,
+          [
+            [:host, value],
+            [:port, value],
+          ]
+      ],
+      [
+        /^(.*)$/,
+        [
+          [:host, value],
+        ]
+      ]
+    ]
   end
 end
