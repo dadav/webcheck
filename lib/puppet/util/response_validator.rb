@@ -34,9 +34,9 @@ class Puppet::Util::ResponseValidator
   def valid_connection_new_client?
     test_uri = URI(uri)
     begin
-      conn = Puppet.runtime[:http]
-      _response = conn.get(test_uri, headers: headers)
-      check_response(_response)
+      client = Puppet.runtime[:http]
+      response = client.get(test_uri, headers: headers, options: {include_system_store: true})
+      check_response(response)
     rescue Puppet::HTTP::HTTPError => e
       false
     end
