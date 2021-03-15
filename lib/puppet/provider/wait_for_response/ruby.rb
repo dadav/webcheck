@@ -5,7 +5,7 @@ Puppet::Type.type(:wait_for_response).provide(:ruby) do
   desc 'A provider for the resource type "wait_for_connection" which attemps to create the connection via. the socket package.'
 
   def exists?
-    if resource[:refreshonly]
+    if resource[:refreshonly] == true
       return true
     end
     trigger
@@ -34,11 +34,15 @@ Puppet::Type.type(:wait_for_response).provide(:ruby) do
       })
     end
 
-    connected
+    @result = connected
+    false
   end
 
   def create
-    raise Puppet::Error, "Unable to validate response of uri! (#{@validator.uri})"
+    if @result == false
+      raise Puppet::Error, "Unable to validate response of uri! (#{@validator.uri})"
+    end
+    true
   end
 
   def validator

@@ -17,14 +17,6 @@ class Puppet::Util::ResponseValidator
     @headers    = { 'Accept' => 'application/json' }
   end
 
-  def log_error(cause, code = nil)
-    if code.nil?
-      Puppet.notice "Unable to connect to #{uri} (#{cause})"
-    else
-      Puppet.notice "Unable to connect to #{uri} ([#{code}]: #{cause})"
-    end
-  end
-
   def check_response(data)
     unless expected_status_codes.nil? || expected_status_codes.empty?
       return false unless expected_status_codes.include?(data.code.to_i)
@@ -45,21 +37,20 @@ class Puppet::Util::ResponseValidator
       conn = Puppet.runtime[:http]
       _response = conn.get(test_uri, headers: headers)
       check_response(_response)
-    rescue Puppet::HTTP::ResponseError => e
-      log_error e.message, e.response.code
+    rescue Puppet::HTTP::HTTPError => e
       false
     end
   end
 
   def valid_connection_old_client?
     test_uri = URI(uri)
-    conn = Puppet::Network::HttpPool.http_instance(test_uri.host, test_uri.port, test_uri.scheme == "http" ? false : true, false)
-    response = conn.get(test_uri.path, headers)
-    unless response.is_a?(Net::HTTPSuccess)
-      log_error(response.msg, response.code)
-      return false
+    begin
+      conn = Puppet::Network::HttpPool.http_instance(test_uri.host, test_uri.port, test_uri.scheme == "http" ? false : true, false)
+      response = conn.get(test_uri.path, headers)
+      check_response(response)
+    rescue Puppet::HTTP::HTTPError => e
+      false
     end
-    check_response(response)
   end
 
   def attempt_connection

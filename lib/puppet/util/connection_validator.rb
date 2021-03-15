@@ -15,7 +15,6 @@ class Puppet::Util::ConnectionValidator
       _conn.close()
       true
     rescue StandardError => e
-      Puppet.debug("Could not connect to #{host}:#{port}")
       false
     end
   end
