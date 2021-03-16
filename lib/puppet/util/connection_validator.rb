@@ -9,6 +9,10 @@ class Puppet::Util::ConnectionValidator
     @port = port
   end
 
+  def failed_message
+    "Unable to connect to the host! (#{host}:#{port})"
+  end
+
   def attempt_connection
     begin
       _conn = TCPSocket.new host, port

@@ -1,15 +1,9 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..', '..'))
 require 'puppet/util/response_validator'
+require 'puppet/provider/waitfor'
 
-Puppet::Type.type(:wait_for_response).provide(:ruby) do
+Puppet::Type.type(:wait_for_response).provide(:ruby, :parent => Puppet::Provider::WaitFor) do
   desc 'A provider for the resource type "wait_for_connection" which attemps to create the connection via. the socket package.'
-
-  def exists?
-    if resource[:refreshonly] == true
-      return true
-    end
-    trigger
-  end
 
   def trigger
     start_time = Time.now
@@ -36,13 +30,6 @@ Puppet::Type.type(:wait_for_response).provide(:ruby) do
 
     @result = connected
     false
-  end
-
-  def create
-    if @result == false
-      raise Puppet::Error, "Unable to validate response of uri! (#{@validator.uri})"
-    end
-    true
   end
 
   def validator

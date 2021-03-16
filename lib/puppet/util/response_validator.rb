@@ -1,4 +1,3 @@
-require 'socket'
 require 'json'
 require 'uri'
 
@@ -15,6 +14,10 @@ class Puppet::Util::ResponseValidator
     @expected_json = expected_json
     @expected_keywords = expected_keywords
     @headers    = { 'Accept' => 'application/json' }
+  end
+
+  def failed_message
+    "Unable to validate response of uri! (#{@validator.uri})"
   end
 
   def check_response(data)
@@ -60,5 +63,4 @@ class Puppet::Util::ResponseValidator
       valid_connection_old_client?
     end
   end
-
 end
