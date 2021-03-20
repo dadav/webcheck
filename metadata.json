@@ -1,6 +1,6 @@
 {
   "name": "ningyou-webcheck",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "dadav",
   "summary": "This module ships two resources which help to create http dependencies",
   "license": "Apache-2.0",
@@ -63,7 +63,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 6.21.0 < 8.0.0"
+      "version_requirement": ">= 4.0.0 < 8.0.0"
     }
   ],
   "pdk-version": "2.0.0",
