@@ -2,9 +2,11 @@
   "name": "ningyou-webcheck",
   "version": "0.1.0",
   "author": "dadav",
-  "summary": "",
+  "summary": "This module ships two resources which help to create http dependencies",
   "license": "Apache-2.0",
-  "source": "",
+  "source": "https://github.com/dadav/webcheck",
+  "project_page": "https://github.com/dadav/webcheck",
+  "issues_url": "https://github.com/dadav/webcheck/issues",
   "dependencies": [
 
   ],
